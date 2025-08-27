@@ -140,7 +140,7 @@ const Dashboard = () => {
                   </Avatar>
                   <Box>
                     <Typography variant="h6" component="h2">
-                      User Profile
+                      Profile
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       Account information

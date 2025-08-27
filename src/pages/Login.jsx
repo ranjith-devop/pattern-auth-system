@@ -25,8 +25,7 @@ import PatternCanvas from '../components/PatternCanvas';
 import PatternDisplay from '../components/PatternDisplay';
 import EmojiSelector from '../components/EmojiSelector';
 import { AuthService } from '../utils/authService';
-import { PatternUtils } from '../utils/patternUtils'; // ✅ Fixed: Proper import
-
+import { PatternUtils } from '../utils/patternUtils';
 const Login = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
