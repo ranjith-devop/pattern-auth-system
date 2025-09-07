@@ -46,8 +46,7 @@ pids
 *.seed
 *.pid.lock
 
-# Vercel
-.vercel
+
 
 # Temporary folders
 tmp/
