@@ -6,62 +6,28 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import { AuthService } from './utils/authService';
 
-// Protected Route Component
-const ProtectedRoute = ({ children }) => {
-  const currentUser = AuthService.getCurrentUser();
-  return currentUser ? children : <Navigate to="/login" replace />;
-};
+// Simple helper and small wrappers with clear names
+const isLoggedIn = () => Boolean(AuthService.getCurrentUser());
 
-// Public Route Component (redirect if already logged in)
-const PublicRoute = ({ children }) => {
-  const currentUser = AuthService.getCurrentUser();
-  return !currentUser ? children : <Navigate to="/dashboard" replace />;
-};
+const RequireAuth = ({ children }) => (isLoggedIn() ? children : <Navigate to="/login" replace />);
+const RedirectIfAuth = ({ children }) => (!isLoggedIn() ? children : <Navigate to="/dashboard" replace />);
 
 function App() {
   return (
     <Router>
       <Box sx={{ minHeight: '100vh' }}>
         <Routes>
-          {/* Default redirect */}
-          <Route 
-            path="/" 
-            element={<Navigate to="/login" replace />} 
-          />
-          
-          {/* Public routes */}
-          <Route 
-            path="/login" 
-            element={
-              <PublicRoute>
-                <Login />
-              </PublicRoute>
-            } 
-          />
-          <Route 
-            path="/register" 
-            element={
-              <PublicRoute>
-                <Register />
-              </PublicRoute>
-            } 
-          />
-          
-          {/* Protected routes */}
-          <Route 
-            path="/dashboard" 
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            } 
-          />
-          
-          {/* Catch all route */}
-          <Route 
-            path="*" 
-            element={<Navigate to="/login" replace />} 
-          />
+          <Route path="/" element={<Navigate to="/login" replace />} />
+
+          {/* Public pages (redirect to dashboard if already logged in) */}
+          <Route path="/login" element={<RedirectIfAuth><Login /></RedirectIfAuth>} />
+          <Route path="/register" element={<RedirectIfAuth><Register /></RedirectIfAuth>} />
+
+          {/* Protected pages (require login) */}
+          <Route path="/dashboard" element={<RequireAuth><Dashboard /></RequireAuth>} />
+
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </Box>
     </Router>
